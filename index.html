@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8" />
+  <title>SpongeBob's Jellyfish Fields</title>
+
+  <!--Aframe Scripts-->
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+  <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js"></script>
+  <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+  <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+
+  <!--Local Scripts-->
+  <script src="js/jellyfish.js"></script>
+  <script src="js/gameplay.js"></script>
+  <script src="js/player.js"></script>
+</head>
+
+<body>
+  <a-scene id="scene" renderer="colorManagement: true;" inspector-plugin-recast physics="debug: false" collider>
+    <!--Assets-->
+    <a-assets>
+      <a-asset-item id="net-gltf" src="./assets/jellyfish_net/scene.gltf"></a-asset-item>
+      <a-asset-item id="jellyfish-gltf" src="./assets/jellyfish/scene.gltf"></a-asset-item>
+
+      <audio id="swim-wav" src="./assets/sounds/swim.wav"></audio>
+    </a-assets>
+
+    <!--Camera-->
+    <a-entity id="camera-rig" movement-controls="speed:0.4; constrainToNavMesh:true" position="0 -1 5" >
+      <a-entity id="camera" camera position="0 12 0"
+        look-controls="pointerLockEnabled: true">
+        <a-cursor></a-cursor>
+        <a-entity 
+          id="net" 
+          position=".75 -.5 -2" rotation="0 -45 0" 
+          scale=".005 .005 .005" gltf-model="#net-gltf"
+        ></a-entity>
+
+        <!--Sounds-->
+        <a-entity 
+          id="swim" sound="
+            src: #swim-wav; 
+            poolSize:1; 
+            autoplay: false; 
+            volume: 0.05;
+            loop:false
+        "></a-entity>
+
+        <!--Text-->
+        <a-entity position="0 0 -1">
+          <a-entity 
+            position="0 .7 0"
+            text="
+              font:exo2bold; 
+              align:center; 
+              width:2; color:black; 
+              value: SpongeBob's Jellyfish Fields
+          "></a-entity>
+
+          <a-entity 
+            id="jellies" position="1.45 .7 0"
+            text="
+              font:exo2bold; 
+              align:center; 
+              width:3; color:black; 
+              value:50
+          "></a-entity>
+          <a-entity 
+            position="1.2 .68 0"
+            text="
+              font:aileronsemibold; 
+              align:center;
+              width:1; color:black; 
+              value:JELLYFISHES \n REMAINING
+          "></a-entity>
+
+          <a-entity 
+            id="score" position="1.45 .54 0" 
+            text="
+              font:exo2bold; 
+              align:center; 
+              width:2; color:black; 
+              value: 0
+          "></a-entity>
+          <a-entity 
+            position="1.25 .53 0" 
+            text="
+              font:aileronsemibold; 
+              align:center; 
+              width:1; color:black; 
+              value:SCORE
+          "></a-entity>
+
+          <a-entity 
+            id="lives" position="-1.45 .7 0" 
+            text="
+              font:exo2bold; 
+              align:center; 
+              width:3; color:black; 
+              value: 5
+          "></a-entity>
+          <a-entity 
+            position="-1.3 .68 0"
+            text="
+              font:aileronsemibold;
+              align:center; 
+              width:1; color:black; 
+              value:PLAYER \n LIVES
+          "></a-entity>
+
+          <a-entity 
+            id="timer" position="-1.45 .54 0"
+            text="
+              font:exo2bold; 
+              align:center; 
+              width:2; color:black; 
+              value: 00:00
+          "></a-entity>
+          <a-entity 
+            position="-1.2 .53 0"
+            text="
+              font:aileronsemibold; 
+              align:center; 
+              width:1; 
+              color:black; 
+              value:TIME \n REMAINING
+          "></a-entity>
+
+          <a-entity 
+            id="gameover" position="0 0 0" visible="false"
+            text="
+              font:exo2bold; 
+              align:center; 
+              width:5; color:black; 
+              value:GAME OVER
+          "></a-entity>
+        </a-entity>
+      </a-entity>
+    </a-entity>
+
+    <!--Environment-->
+    <a-entity 
+      id="environment" environment="
+        preset: arches; 
+        skyType: gradient; 
+        lighting: point; 
+        groundColor: #379F3C; 
+        groundColor2: #36910D;
+        dressingColor: #4D4569;
+      "></a-entity>
+
+    <!--Objects-->
+    <a-entity player-movement></a-entity>
+    <a-entity jellyfish></a-entity>
+    <a-entity jellyfish-shoot></a-entity>
+
+    <a-box 
+      id="collider" 
+      position="0 10.5 5" rotation="-90 0 0" 
+      width="1" height="1" depth="10" 
+      dynamic-body="mass:0" gameplay
+    ></a-box>
+
+  </a-scene>
+</body>
+
+</html>
